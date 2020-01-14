@@ -36,10 +36,10 @@ public class AdminController {
     @GetMapping(value = {"/"})
     public String redirectToLoginPage() {
         return "redirect:/login";
-        }
+    }
 
     @GetMapping(value = {"/login"})
-    public String showLoginPage()  {
+    public String showLoginPage() {
         return "login";
     }
 
@@ -48,23 +48,27 @@ public class AdminController {
         List<User> listUsers = userService.listUser();
         model.addAttribute("users", listUsers);
         return "admin";
-
     }
 
-   @GetMapping("/admin/addUser")
+
+
+
+
+    @GetMapping("/admin/addUser")
     public String addUser(Model model) {
-       User user = new User();
-       //user.setRoles(getRoles(role.getName()));
-       model.addAttribute("user", user);
-       //model.addAttribute("login",user.getLogin());
-       //model.addAttribute("password",user.getPassword());
-       //model.addAttribute("role", role.getName());
-       return "addUser";
+        User user = new User();
+        //user.setRoles(getRoles(role.getName()));
+        model.addAttribute("user", user);
+        //model.addAttribute("login",user.getLogin());
+        //model.addAttribute("password",user.getPassword());
+        //model.addAttribute("role", role.getName());
+        return "addUser";
     }
 
-   @PostMapping(value = {"/admin/addUser"})
-    public String addUser(@RequestParam("login") String login, @RequestParam("password") String password) {
+    @PostMapping(value = {"/admin/addUser"})
+    public String addUser(@RequestParam("login") String login, @RequestParam("password") String password, @ModelAttribute("role") Role role) {
         User user = new User(login, password, true);
+       // user.setRoles(getRoles(role.getName()));
         userService.insertUser(user);
         return "redirect:/admin";
     }
@@ -73,8 +77,15 @@ public class AdminController {
 
 
 
+
+
+
+
+
+
+
     @GetMapping(value = {"/admin/edit/{id}"})
-    public ModelAndView editUser(@PathVariable("id") Long id)  {
+    public ModelAndView editUser(@PathVariable("id") Long id) {
         ModelAndView model = new ModelAndView("edit");
         model.addObject("user", userService.selectUser(id));
         return model;
@@ -83,13 +94,12 @@ public class AdminController {
     @PostMapping(value = "/admin/update/{id}")
     public String editUser(@ModelAttribute("user") User user, HttpServletRequest request) throws UnsupportedEncodingException {
         request.setCharacterEncoding("utf-8");
-        userService.updateUser(new User(user.getId(), user.getLogin(),user.getPassword(),true));
+        userService.updateUser(new User(user.getId(), user.getLogin(), user.getPassword(), true));
 
         //user.setRoles(getRoles(role.getName()));
         userService.updateUser(user);
         return "redirect:/admin";
     }
-
 
 
     @GetMapping(value = "/admin/delete/{id}")
@@ -134,4 +144,17 @@ public class AdminController {
         return roles;
     }
 
+
+    @RequestMapping(value = "/doUpdate", method = RequestMethod.POST)
+    String updateUser(@Valid  @ModelAttribute("student")User user, @ModelAttribute("role") Role role) {
+       // User user1 = userService.getStudent(student.getId());
+        User user1 = userService.selectUser(user.getId());
+        user1.setId(user.getId());
+        user1.setLogin(user.getLogin());
+        user1.setPassword(user.getPassword());
+        //user1.setRoles(user.getRoles());
+        user1.setRoles(getRoles(role.getName()));
+        userService.insertUser(user1);
+            return "redirect:/admin";
+    }
 }

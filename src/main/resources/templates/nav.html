@@ -1,0 +1,29 @@
+<!-- Навигационная панель с 3 вкладками -->
+<ul class="nav nav-tabs" role="tablist" id="myTabExample">
+    <li class="active"><a href="#homeExample" role="tab" data-toggle="tab">Главная</a></li>
+    <li><a href="#questionsExample" role="tab" data-toggle="tab">Вопросы</a></li>
+    <li><a href="#articlesExample" role="tab" data-toggle="tab">Статьи</a></li>
+</ul>
+
+<!-- Содержимое вкладок -->
+<div class="tab-content">
+    <!-- Содержимое 1 вкладки -->
+    <div class="tab-pane active" id="homeExample">
+        Содержание вкладки "Главная"
+    </div>
+    <!-- Содержимое 2 вкладки -->
+    <div class="tab-pane active" id="questionsExample">
+        Содержание вкладки "Вопросы"
+    </div>
+    <!-- Содержимое 3 вкладки -->
+    <div class="tab-pane active" id="articlesExample">
+        Содержание вкладки "Статьи"
+    </div>
+</div>
+
+<!-- Скрипт для активирования работы вкладок -->
+<script>
+    $(function() {
+        $('#myTabExample a:last').tab('show')
+    });
+</script>

@@ -51,10 +51,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             http.authorizeRequests()
                     //позволяет зарестирктить достур
                     .antMatchers("/user/**")//указываю для какого юрла хочу настроить доступ
-                    .hasAnyAuthority("ROLE_USER")//юзер с ролью юзер может войти на юрл выше
+                    .permitAll()
+                    //.hasAnyAuthority("ROLE_USER")//юзер с ролью юзер может войти на юрл выше
                     .antMatchers("/admin/**")
-                    //.permitAll()
-                    .hasAnyAuthority("ROLE_ADMIN")
+                    .permitAll()
+                    //.hasAnyAuthority("ROLE_ADMIN")
                     .and()
                     .formLogin()//регистрируем страницу с формой логина
                     .loginPage("/login")//имя джспи страницы куда направить по дефолту при запуске
