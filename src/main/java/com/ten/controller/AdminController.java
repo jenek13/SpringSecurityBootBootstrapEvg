@@ -54,27 +54,61 @@ public class AdminController {
 
 
 
+
+
+
+
+    /*@GetMapping("/admin/addUser")
+    public String addUser() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("user", new User());
+        modelAndView.setViewName("admin");
+        return "modelAndView";
+    }*/
+
     @GetMapping("/admin/addUser")
     public String addUser(Model model) {
         User user = new User();
-        //user.setRoles(getRoles(role.getName()));
         model.addAttribute("user", user);
-        //model.addAttribute("login",user.getLogin());
-        //model.addAttribute("password",user.getPassword());
-        //model.addAttribute("role", role.getName());
-        return "addUser";
+        //user.setRoles(getRoles(role.getName()));
+        model.addAttribute("login",user.getLogin());
+        model.addAttribute("password",user.getPassword());
+       // model.addAttribute("role", role.getName());
+        return "admin";
     }
 
-    @PostMapping(value = {"/admin/addUser"})
+    /*@PostMapping(value = {"/admin/addUser"})
     public String addUser(@RequestParam("login") String login, @RequestParam("password") String password, @ModelAttribute("role") Role role) {
         User user = new User(login, password, true);
        // user.setRoles(getRoles(role.getName()));
         userService.insertUser(user);
         return "redirect:/admin";
+    }*/
+
+    @PostMapping(value = {"/admin/addUser"})
+    public String addUser(@ModelAttribute("user") User user,  BindingResult bindingResult, @ModelAttribute("role") Role role) {
+        if (bindingResult.hasErrors()) {
+            return "error";
+        }else {
+            user.setRoles(getRoles(role.getName()));
+            userService.insertUser(user);
+        }
+
+        return "redirect:/admin";
     }
 
 
+    @RequestMapping(value = "/admin/addUser", method = RequestMethod.POST)
+    public String doRegistration(@Valid @ModelAttribute("user") User user, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("hasError", true);
+            return "admin";
+        }
+                userService.insertUser(user);
+                return "admin";
 
+
+        }
 
 
 
@@ -146,8 +180,7 @@ public class AdminController {
 
 
     @RequestMapping(value = "/doUpdate", method = RequestMethod.POST)
-    String updateUser(@Valid  @ModelAttribute("student")User user, @ModelAttribute("role") Role role) {
-       // User user1 = userService.getStudent(student.getId());
+    String updateUser(@Valid  @ModelAttribute("user")User user, @ModelAttribute("role") Role role) {
         User user1 = userService.selectUser(user.getId());
         user1.setId(user.getId());
         user1.setLogin(user.getLogin());

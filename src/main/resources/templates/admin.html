@@ -97,7 +97,8 @@
                                                         th:value ="${user.setRoles(getRoles(role.getName()))}"/
 
                                                     </div>
-                                                <button type="button" class="btn btn-outline-info" data-dismiss="modal">Close</button>
+
+                                                    <button type="button" class="btn btn-outline-info" data-dismiss="modal">Close</button>
                                                 <button type="submit" class="form-group-item btn btn-info">Update user</button>
                                             </form>
                                         </div>
@@ -118,42 +119,39 @@
             <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
                 <h4>Add new user</h4>
 
-                <!--                <form action="/admin/addUser" method="POST" class="form-group mt-0 pt-1">-->
-                <!--                    &lt;!&ndash; Text input&ndash;&gt;-->
-                <!--                    <div class="form-group">-->
-                <!--                        <label class="col-md-4 control-label" for="id">ID</label>-->
-                <!--                        <div class="col-md-4">-->
-                <!--                            <input id="id" name="id" type="text" placeholder="id" class="form-control input-md" th:value="${user.id}"/>-->
-                <!--                        </div>-->
-                <!--                    </div>-->
-                <!--                    &lt;!&ndash; Text input&ndash;&gt;-->
-                <!--                    <div class="form-group">-->
-                <!--                        <label class="col-md-4 control-label" for="login">Login</label>-->
-                <!--                        <div class="col-md-4">-->
-                <!--                            <input id="login" name="login" type="text" placeholder="Login" class="form-control input-md" th:value="${user.login}"/>-->
-                <!--                        </div>-->
-                <!--                    </div>-->
-                <!--                    &lt;!&ndash; Text input&ndash;&gt;-->
-                <!--                    <div class="form-group">-->
-                <!--                        <label class="col-md-4 control-label" for="password">Password</label>-->
-                <!--                        <div class="col-md-4">-->
-                <!--                            <input id="password" name="password" type="text" placeholder="password" class="form-control input-md" th:value="${user.password}"/>-->
-                <!--                        </div>-->
-                <!--                    </div>-->
+                <div class="container my-5">
+                    <h3> Add User</h3>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="col-md-10">
 
-                <!--                    &lt;!&ndash; Text input&ndash;&gt;-->
-                <!--                    <div class="form-group">-->
-                <!--                        <label class="col-md-4 control-label" for="role">Role</label>-->
-                <!--                        <div class="col-md-4">-->
-                <!--                            <input id="role" name="role" type="text" placeholder="role" class="form-control input-md" th:each="role : ${roles}" th:value ="${user.setRoles(getRoles(role.getName()))}"/>-->
-                <!--                            &lt;!&ndash;                                                            th:each="role : ${roles}"&ndash;&gt;-->
-                <!--                            &lt;!&ndash;                                                            th:value ="${user.setRoles(getRoles(role.getName()))}"&ndash;&gt;-->
-                <!--                        </div>-->
-                <!--                    </div>-->
+                                <form class="form-horizontal" action="#" th:action="@{/admin/addUser}" method="post" th:object="${user}">
 
-                <!--                    <button type="button" class="btn btn-outline-info" data-dismiss="modal">Close</button>-->
-                <!--                    <button type="submit" class="form-group-item btn btn-info">Update user</button>-->
-                <!--                </form>-->
+                                    <!-- Text input-->
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label" for="login">Login</label>
+                                        <div class="col-md-4">
+                                            <input  path="login" name="login"
+                                                   type="text"  class="form-control input-md"
+                                                   th:field="*{login}"/>
+                                            <span th:if="${#fields.hasErrors('login')}" th:errors="*{login}"></span>
+
+                                        </div>
+                                    </div>
+
+                                    <!-- Button -->
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label" for="register"></label>
+                                        <div class="col-md-4">
+                                            <button id="register" name="register" class="btn btn-primary">Register</button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
             </div>
 
