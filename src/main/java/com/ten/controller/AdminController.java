@@ -101,7 +101,9 @@ public class AdminController {
     }
 
 
+public void newy () {
 
+    }
 
 
     @GetMapping(value = {"/user"})
