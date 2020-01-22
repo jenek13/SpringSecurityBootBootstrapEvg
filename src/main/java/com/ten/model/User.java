@@ -19,10 +19,8 @@ public class User implements UserDetails {
     @Column(name = "login",  nullable = false, unique = true)
     private String login;
 
-
     @Column(name = "password", length = 30, nullable = false)
     private String password;
-
 
     @ManyToMany(fetch = FetchType.EAGER, targetEntity = Role.class)
     @JoinTable(name = "user_roles",
@@ -31,18 +29,46 @@ public class User implements UserDetails {
 
     private Set<Role> roles = new HashSet<>();
 
-
     @Column(name = "enabled", nullable = false)
     private Boolean enabled = true;
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+
+
+
+
+
 
 
     public User() {
     }
 
+    /*public User(Long id, String login, String password, boolean enabled, Set<Role> roles) {
+        this.id = id;
+        this.login = login;
+        this.password = password;
+        this.enabled = enabled;
+        this.roles = roles;
+    }
+
+    public User(String login, String password, boolean enabled, Set<Role> roles) {
+        this.login = login;
+        this.password = password;
+        this.enabled = enabled;
+        this.roles = roles;
+    }*/
+
     public User(String login, String password, boolean enabled) {
         this.login = login;
         this.password = password;
         this.enabled = enabled;
+
     }
 
     public User(Long id, String login, String password, boolean enabled) {
@@ -104,13 +130,6 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
 
     public String toString() {
         return login;
@@ -137,4 +156,6 @@ public class User implements UserDetails {
         result = 31 * result + (enabled != null ? enabled.hashCode() : 0);
         return result;
     }
+
+
 }

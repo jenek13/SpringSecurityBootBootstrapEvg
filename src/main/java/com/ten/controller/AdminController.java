@@ -45,78 +45,22 @@ public class AdminController {
 
     @GetMapping("/admin")
     public String adminPage(Model model) {
+        User user = new User();
+        model.addAttribute("user", user);
+
         List<User> listUsers = userService.listUser();
         model.addAttribute("users", listUsers);
         return "admin";
     }
 
-
-
-
-
-
-
-
-
-    /*@GetMapping("/admin/addUser")
-    public String addUser() {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("user", new User());
-        modelAndView.setViewName("admin");
-        return "modelAndView";
-    }*/
-
-    @GetMapping("/admin/addUser")
-    public String addUser(Model model) {
-        User user = new User();
-        model.addAttribute("user", user);
-        //user.setRoles(getRoles(role.getName()));
-        model.addAttribute("login",user.getLogin());
-        model.addAttribute("password",user.getPassword());
-       // model.addAttribute("role", role.getName());
-        return "admin";
-    }
-
-    /*@PostMapping(value = {"/admin/addUser"})
-    public String addUser(@RequestParam("login") String login, @RequestParam("password") String password, @ModelAttribute("role") Role role) {
+    @PostMapping(value = {"/admin"})
+    public String addUser(@RequestParam("login") String login, @RequestParam("password") String password,
+                          @RequestParam(value = "role", required = false) String role) {
         User user = new User(login, password, true);
-       // user.setRoles(getRoles(role.getName()));
+        user.setRoles(getRoles(role));
         userService.insertUser(user);
         return "redirect:/admin";
-    }*/
-
-    @PostMapping(value = {"/admin/addUser"})
-    public String addUser(@ModelAttribute("user") User user,  BindingResult bindingResult, @ModelAttribute("role") Role role) {
-        if (bindingResult.hasErrors()) {
-            return "error";
-        }else {
-            user.setRoles(getRoles(role.getName()));
-            userService.insertUser(user);
-        }
-
-        return "redirect:/admin";
     }
-
-
-    @RequestMapping(value = "/admin/addUser", method = RequestMethod.POST)
-    public String doRegistration(@Valid @ModelAttribute("user") User user, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            model.addAttribute("hasError", true);
-            return "admin";
-        }
-                userService.insertUser(user);
-                return "admin";
-
-
-        }
-
-
-
-
-
-
-
-
 
     @GetMapping(value = {"/admin/edit/{id}"})
     public ModelAndView editUser(@PathVariable("id") Long id) {
@@ -125,22 +69,40 @@ public class AdminController {
         return model;
     }
 
-    @PostMapping(value = "/admin/update/{id}")
-    public String editUser(@ModelAttribute("user") User user, HttpServletRequest request) throws UnsupportedEncodingException {
-        request.setCharacterEncoding("utf-8");
-        userService.updateUser(new User(user.getId(), user.getLogin(), user.getPassword(), true));
-
-        //user.setRoles(getRoles(role.getName()));
-        userService.updateUser(user);
+    @RequestMapping(value = "/doUpdate", method = RequestMethod.POST)
+    String updateUser(@Valid  @ModelAttribute("user")User user, @ModelAttribute("role") Role role) {
+        User user1 = userService.selectUser(user.getId());
+        user1.setId(user.getId());
+        user1.setLogin(user.getLogin());
+        user1.setPassword(user.getPassword());
+        //user1.setRoles(user.getRoles());
+        user1.setRoles(getRoles(role.getName()));
+        userService.insertUser(user1);
         return "redirect:/admin";
     }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     @GetMapping(value = "/admin/delete/{id}")
-    public String deleteUser(@PathVariable("id") Long id) {
+    public String deleteUser(Model model, @PathVariable("id") Long id) {
         userService.deleteUser(id);
         return "redirect:/admin";
     }
+
+
+
+
 
     @GetMapping(value = {"/user"})
     public ModelAndView userPage() {
@@ -177,17 +139,6 @@ public class AdminController {
 
         return roles;
     }
-
-
-    @RequestMapping(value = "/doUpdate", method = RequestMethod.POST)
-    String updateUser(@Valid  @ModelAttribute("user")User user, @ModelAttribute("role") Role role) {
-        User user1 = userService.selectUser(user.getId());
-        user1.setId(user.getId());
-        user1.setLogin(user.getLogin());
-        user1.setPassword(user.getPassword());
-        //user1.setRoles(user.getRoles());
-        user1.setRoles(getRoles(role.getName()));
-        userService.insertUser(user1);
-            return "redirect:/admin";
-    }
 }
+
+
