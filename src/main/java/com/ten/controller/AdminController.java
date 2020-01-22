@@ -101,6 +101,15 @@ public class AdminController {
     }
 
 
+    /*@GetMapping("delete/{id}")
+    public String deleteStudent(@PathVariable("id") long id, Model model) {
+        Student student = studentRepository.findById(id)
+                .orElseThrow(() - > new IllegalArgumentException("Invalid student Id:" + id));
+        studentRepository.delete(student);
+        model.addAttribute("students", studentRepository.findAll());
+        return "index";
+    }*/
+
 
 
 
